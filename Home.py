@@ -79,7 +79,9 @@ def commitChanges(df):
 
   option_to_commit = st.selectbox(
     label='Commit By Which Option',
-    options=options
+    options=options,
+    index=None,
+    placeholder='Select an Option'
   )
 
   if option_to_commit:
