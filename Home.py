@@ -6,10 +6,17 @@ import time
 def establishSheetsConnections():
   st.session_state.conn = st.experimental_connection('gsheets', type=GSheetsConnection)
 
-def preprocessSheet(df):
+def preprocessSheet(df, select=False):
   df.columns = [col.strip() for col in df.columns]
   phone_number_col = 'Phone number'
   df[phone_number_col] = df[phone_number_col].astype(str).str.strip('.0')
+
+  time, name, *others = df.columns
+
+  if select:
+    df['Select'] = [False for _ in range(len(df))]
+
+  df = df[[time, name, 'Select'] + others]
 
   return df
 
@@ -22,11 +29,11 @@ def plotDataEditor(df):
         ),
 
         'LinkedIn Profile Link' : st.column_config.LinkColumn(
-            "LinkedIn Profile", display_text="Open Profile"
+            "LinkedIn Profile", display_text="Open LinkedIn"
         ),
 
         'GitHub Profile Link' : st.column_config.LinkColumn(
-            "GitHub Profile", display_text="Open Profile"
+            "GitHub Profile", display_text="Open GitHub"
         )
       }
     )
@@ -59,7 +66,7 @@ else:
     if not st.session_state.get('conn'):
       establishSheetsConnections()
 
-    current_submissions = preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30))
+    current_submissions = preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30), select=True)
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
