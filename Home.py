@@ -38,7 +38,7 @@ def plotDataEditor(df):
     )
 
 def evaluateChanges(df):
-  return df[df['Select']]
+  return df[df['Select']][[col for col in df.columns if col != 'Select']]
 
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
