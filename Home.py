@@ -167,12 +167,11 @@ else:
 
     st.write('### :blue[**Current Submissions**]')
     changes = plotDataEditor(current_submissions)
-
-    col1, col2 = st.columns([0.9, 0.1])
     
     st.write('### :gray[**Buffer**]')
-    col1.dataframe(evaluateChanges(changes))
-    col2.button('Use Predifined Buffer Options')
+    st.dataframe(evaluateChanges(changes))
+    _, center, __ = st.columns([0.45, 0.4, 0.1])
+    center.button('Use Predifined Buffer Options')
 
     st.write('### :green[**Verified**]')
     plotDataEditor(verified)
