@@ -127,8 +127,6 @@ def commitChanges(df):
         worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets)
       else:
         st.error('No Existing Worksheets Found')
-        time.sleep(5)
-        st.rerun()
       
 
 def getResponses():
