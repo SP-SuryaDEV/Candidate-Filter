@@ -20,6 +20,9 @@ def preprocessSheet(df, select=False):
   return df
 
 def plotDataEditor(df):
+  if len(df) <= 1:
+    return st.dataframe(df)
+    
   return st.data_editor(
       df,
       column_config={
