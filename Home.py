@@ -7,8 +7,9 @@ def establishSheetsConnections():
   st.session_state.conn = st.experimental_connection('gsheets', type=GSheetsConnection)
 
 def preprocessSheet(df):
-  phone_number_col_id = 5
-  df[df.columns[phone_number_col_id]] = df[df.columns[phone_number_col_id]].astype(str).str.strip('.0')
+  df.columns = [col.strip() for col in df.columns]
+  phone_number_col = 'Phone Number'
+  df[phone_number_col] = df[phone_number_col].astype(str).str.strip('.0')
 
   return df
 
@@ -44,7 +45,13 @@ else:
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
-    st.data_editor(current_submissions)
+    st.data_editor(
+      current_submissions,
+      column_config={
+        '' : st.column_config.LinkColumn(
+            "Resume", display_text="Open Resume"
+        )
+    )
 
     st.write(':red[**Verified**]')
     st.data_editor(verified)
