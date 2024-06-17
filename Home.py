@@ -159,7 +159,12 @@ else:
     st.write(':blue[### **Current Submissions**]')
     changes = plotDataEditor(current_submissions)
 
-    st.dataframe(evaluateChanges(changes))
-
     st.write(':green[### **Verified**]')
     plotDataEditor(verified)
+
+    commit = st.button('Commit Changes')
+
+    if commit:
+      eval_changes = evaluateChanges(changes)
+      commitChanges(eval_changes)
+  
