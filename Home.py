@@ -116,6 +116,7 @@ def commitChanges(df):
       new_worksheet_name = getWorksheetName()
 
       if new_worksheet_name:
+        Cacher.newWorksheet(new_worksheet_name)
         Worksheet.createNewWorksheet(new_worksheet_name, df)
         st.rerun()
         
