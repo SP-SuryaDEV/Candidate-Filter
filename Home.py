@@ -141,6 +141,7 @@ def commitChanges(df):
             worksheet,
             pd.concat([Worksheet.getData(worksheet), df], axis=0).drop_duplicates()
           )
+          st.rerun()
       else:
         st.error('No Existing Worksheets Found')
       
