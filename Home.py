@@ -102,11 +102,14 @@ def commitChanges(df):
         worksheets = Cacher.readWorksheets()
         
         new_worksheet_name = st.text_input('Enter New Worksheet Name').strip()
-        submit = st.button(f'Create New Worksheet with name **{new_worksheet_name}**')
+        submit = st.button(f'Create New Worksheet with name {new_worksheet_name}')
 
         if submit:
-          if new_worksheet_name in worksheets:
-            st.error('Worksheet Already Exists... Enter Unique Name.')
+          if worksheets:
+            if new_worksheet_name in worksheets:
+              st.error('Worksheet Already Exists... Enter Unique Name.')
+            else:
+              return new_worksheet_name
           else:
             return new_worksheet_name
 
