@@ -14,9 +14,8 @@ def preprocessSheet(df, select=False):
   time, name, *others = df.columns
 
   if select:
-    df['Select'] = [False for _ in range(len(df))]
-
-  df = df[[time, name, 'Select'] + others]
+    df['Select'] = pd.Series([False for _ in range(len(df))])
+    df = df[[time, name, 'Select'] + others]
 
   return df
 
@@ -66,7 +65,8 @@ else:
     if not st.session_state.get('conn'):
       establishSheetsConnections()
 
-    current_submissions = preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30), select=True)
+    current_submissions = preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30), 
+                                          select=True)
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
