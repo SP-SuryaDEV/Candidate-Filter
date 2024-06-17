@@ -23,7 +23,7 @@ if not st.session_state.get('logged_in'):
         st.error('Enter Valid Email to Authenticate')
       else:
         if email == st.secrets['EMAIL_KEY']:
-          st.success('Hello There')
+          st.session_state.logged_in = True
 
 if st.session_state.get('logged_in'):
   if st.session_state.logged_in == True:
