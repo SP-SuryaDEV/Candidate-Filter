@@ -25,6 +25,6 @@ if not st.session_state.get('logged_in'):
         if email == st.secrets['EMAIL_KEY']:
           st.session_state.logged_in = True
 
-if st.session_state.get('logged_in'):
+else:
   if st.session_state.logged_in == True:
     st.success('Logged In')
