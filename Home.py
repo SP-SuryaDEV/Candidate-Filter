@@ -50,6 +50,10 @@ else:
       column_config={
         'Resume' : st.column_config.LinkColumn(
             "Resume", display_text="Open Resume"
+        ),
+
+        'LinkedIn Profile' : st.column_config.LinkColumn(
+            "LinkedIn Profile", display_text="Open Profile"
         )
       }
     )
