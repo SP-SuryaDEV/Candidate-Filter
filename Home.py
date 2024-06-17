@@ -5,7 +5,7 @@ import pandas as pd
 def isValidEmail(email):
   return email.contains('@') and email.contains('.')
 
-with st.form():
+with st.form(key='login):
   email = st.text_input('Enter Authorized Email:', placeholder='Email')
 
   if email and not isValidEmail(email):
