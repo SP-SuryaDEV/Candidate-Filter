@@ -165,12 +165,12 @@ else:
     current_submissions = getResponses()
     verified = getVerified()
 
-    st.write(':blue[### **Current Submissions**]')
+    st.write('### :blue[**Current Submissions**]')
     changes = plotDataEditor(current_submissions)
 
     st.dataframe(evaluateChanges(changes))
 
-    st.write(':green[### **Verified**]')
+    st.write('### :green[**Verified**]')
     plotDataEditor(verified)
 
     commit = st.button('Commit Changes')
