@@ -6,6 +6,9 @@ import time
 def establishSheetsConnections():
   st.session_state.conn = st.experimental_connection('gsheets', type=GSheetsConnection)
 
+def preprocessSheet(df):
+  df['Phone Number'] = df['Phone Number'].astype(str)
+
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
   
