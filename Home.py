@@ -8,7 +8,7 @@ def establishSheetsConnections():
 
 def preprocessSheet(df):
   df.columns = [col.strip() for col in df.columns]
-  phone_number_col = 'Phone Number'
+  phone_number_col = 'Phone number'
   df[phone_number_col] = df[phone_number_col].astype(str).str.strip('.0')
 
   return df
