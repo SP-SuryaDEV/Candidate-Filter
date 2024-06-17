@@ -47,8 +47,14 @@ def evaluateChanges(df):
 class Cacher:
   @staticmethod
   def newWorksheet(worksheet_name):
-    with open('worksheets.cache', 'a') as file:
-      file.append(f'{worksheet_name}, ')
+    worksheets = Cacher.readWorksheets()
+
+    if worksheets:
+      with open('worksheets.cache', 'a') as file:
+        file.append(f'{worksheet_name}, ')
+    else:
+      with opem('worksheets.cache', 'w') as file:
+        file.write(f'{worksheet_name}, ')
     
 
   @staticmethod
