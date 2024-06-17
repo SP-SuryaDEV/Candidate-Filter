@@ -48,7 +48,7 @@ else:
     st.data_editor(
       current_submissions,
       column_config={
-        '' : st.column_config.LinkColumn(
+        'Resume' : st.column_config.LinkColumn(
             "Resume", display_text="Open Resume"
         )
     )
