@@ -10,7 +10,7 @@ def establishSheetsConnections():
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
   
-if not st.experimental_user.get('email'):
+if not st.session_state.get('logged_in'):
   st.session_state.logged_in = False
   
   with st.form(key='login'):
