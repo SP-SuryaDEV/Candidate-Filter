@@ -94,12 +94,11 @@ def commitChanges(df):
       
     if option_to_commit == options[1]:
 
-      @st.experimental_dialog("Enter Name for New Worksheet")
       def getWorksheetName():
         worksheets = Cacher.readWorksheet()
         
         new_worksheet_name = st.text_input('Enter New Worksheet Name').strip()
-        submit = st.button('Create New Worksheet')
+        submit = st.button(f'Create New Worksheet with name **{new_worksheet_name}**')
 
         if submit:
           if new_worksheet_name in worksheets:
