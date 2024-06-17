@@ -61,9 +61,11 @@ if not st.session_state.get('logged_in'):
 else:
   if st.session_state.logged_in == True:
     st.set_page_config(layout='wide')
-    
-    with st.spinner('Logging In'):
-      time.sleep(3)
+
+    if not st.session_state.get('_loader_used'):
+      with st.spinner('Logging In'):
+        time.sleep(3)
+        st.session_state._loader_used = True
 
     if not st.session_state.get('conn'):
       establishSheetsConnections()
