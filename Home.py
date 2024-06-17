@@ -134,7 +134,7 @@ def commitChanges(df):
       existing_worksheets = Cacher.readWorksheets()
 
       if existing_worksheets:
-        worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets)
+        worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets, index=None)
 
         if worksheet:
           Worksheet.updateWorksheet(
