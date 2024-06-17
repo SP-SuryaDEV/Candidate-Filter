@@ -63,7 +63,7 @@ else:
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
-    
+    plotDataEditor(current_submissions)
 
     st.write(':red[**Verified**]')
-    st.data_editor(verified)
+    plotDataEditor(veified)
