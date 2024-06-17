@@ -13,6 +13,24 @@ def preprocessSheet(df):
 
   return df
 
+def plotDataEditor(df):
+  st.data_editor(
+      df,
+      column_config={
+        'Resume' : st.column_config.LinkColumn(
+            "Resume", display_text="Open Resume"
+        ),
+
+        'LinkedIn Profile Link' : st.column_config.LinkColumn(
+            "LinkedIn Profile", display_text="Open Profile"
+        ),
+
+        'GitHub Profile Link' : st.column_config.LinkColumn(
+            "GitHub Profile", display_text="Open Profile"
+        )
+      }
+    )
+
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
   
@@ -45,18 +63,7 @@ else:
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
-    st.data_editor(
-      current_submissions,
-      column_config={
-        'Resume' : st.column_config.LinkColumn(
-            "Resume", display_text="Open Resume"
-        ),
-
-        'LinkedIn Profile Link' : st.column_config.LinkColumn(
-            "LinkedIn Profile", display_text="Open Profile"
-        )
-      }
-    )
+    
 
     st.write(':red[**Verified**]')
     st.data_editor(verified)
