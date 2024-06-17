@@ -159,6 +159,8 @@ else:
     st.write(':blue[### **Current Submissions**]')
     changes = plotDataEditor(current_submissions)
 
+    st.dataframe(changes)
+
     st.write(':green[### **Verified**]')
     plotDataEditor(verified)
 
