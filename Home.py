@@ -75,7 +75,7 @@ else:
     st.write(':green[**Current Submissions**]')
     changes = plotDataEditor(current_submissions)
 
-    st.dataframe(changes)
+    st.dataframe(evaluateChanges(changes))
 
     st.write(':red[**Verified**]')
     plotDataEditor(verified)
