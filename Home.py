@@ -170,8 +170,8 @@ else:
     
     st.write('### :gray[**Buffer**]')
     st.dataframe(evaluateChanges(changes))
-    _, center, __ = st.columns([0.45, 0.4, 0.1])
-    center.button('Use Predifined Buffer Options')
+    _, center, __ = st.columns([0.4, 0.45, 0.1])
+    use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
     st.write('### :green[**Verified**]')
     plotDataEditor(verified)
@@ -181,4 +181,5 @@ else:
     if commit:
       eval_changes = evaluateChanges(changes)
       commitChanges(eval_changes)
+
   
