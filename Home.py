@@ -61,6 +61,7 @@ class Cacher:
   def readWorksheets():
     if os.path.exists('worksheets.cache'):
       worksheets = open('worksheets.cache', 'r').read().strip().split(', ')
+      worksheets[-1] = worksheets[-1].strip(',')
       return worksheets
     return None
 
