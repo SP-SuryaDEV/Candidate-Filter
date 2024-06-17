@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import time
+import os
 
 def establishSheetsConnections():
   st.session_state.conn = st.experimental_connection('gsheets', type=GSheetsConnection)
