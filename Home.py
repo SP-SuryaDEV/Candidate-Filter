@@ -20,7 +20,7 @@ def preprocessSheet(df, select=False):
   return df
 
 def plotDataEditor(df):
-  st.data_editor(
+  return st.data_editor(
       df,
       column_config={
         'Resume' : st.column_config.LinkColumn(
@@ -70,7 +70,9 @@ else:
     verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
-    plotDataEditor(current_submissions)
+    changes = plotDataEditor(current_submissions)
+
+    st.dataframe(changes)
 
     st.write(':red[**Verified**]')
-    plotDataEditor(veified)
+    plotDataEditor(verified)
