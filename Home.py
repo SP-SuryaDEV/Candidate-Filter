@@ -48,11 +48,14 @@ class Cacher:
   def newWorksheet(worksheet_name):
     with open('worksheets.cache', 'a') as file:
       file.append(f'{worksheet_name}, ')
+    
 
   @staticmethod
   def readWorksheets():
-    worksheets = open('worksheets.cache', 'r').read().strip().split(', ')
-    return worksheets
+    if os.path.exists('worksheets.cache'):
+      worksheets = open('worksheets.cache', 'r').read().strip().split(', ')
+      return worksheets
+    return None
 
 class Worksheet:
   @staticmethod
