@@ -38,7 +38,7 @@ else:
     verified = st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30)
 
     st.write(':green[**Current Submissions**]')
-    st.table(current_submissions)
+    st.data_editor(current_submissions)
 
     st.write(':red[**Verified**]')
-    st.table(verified)
+    st.data_editor(verified)
