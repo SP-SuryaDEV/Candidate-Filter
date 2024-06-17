@@ -51,6 +51,7 @@ else:
         'Resume' : st.column_config.LinkColumn(
             "Resume", display_text="Open Resume"
         )
+      }
     )
 
     st.write(':red[**Verified**]')
