@@ -90,6 +90,7 @@ def commitChanges(df):
         'Verified',
         pd.concat([getVerified(), df]).drop_duplicates()
       )
+      st.rerun()
       
     if option_to_commit == options[1]:
 
@@ -103,7 +104,6 @@ def commitChanges(df):
         if submit:
           if new_worksheet_name in worksheets:
             st.error('Worksheet Already Exists... Enter Unique Name.')
-            return None
           else:
             return new_worksheet_name
 
@@ -111,6 +111,7 @@ def commitChanges(df):
 
       if new_worksheet_name:
         Worksheet.createNewWorksheet(new_worksheet_name, df)
+        st.rerun()
         
     if option_to_commit == options[2]:
       st.success('Hello')
