@@ -79,6 +79,9 @@ class Worksheet:
       worksheet=worksheet_name, 
       data=df
     )
+
+  def getData(worksheet_name):
+    return preprocessSheet(st.session_state.conn.read(worksheet=worksheet_name, usecols = list(range(int(st.secrets.COLS))), ttl=5))
     
 @st.experimental_dialog('Commit Changes?')
 def commitChanges(df):
@@ -132,6 +135,12 @@ def commitChanges(df):
 
       if existing_worksheets:
         worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets)
+
+        if worksheet:
+          Worksheet.updateWorksheet(
+            worksheet,
+            pd.concat([Worksheet.getData(worksheet), df], axis=0).drop_duplicates()
+          )
       else:
         st.error('No Existing Worksheets Found')
       
