@@ -37,8 +37,8 @@ else:
     if not st.session_state.get('conn'):
       establishSheetsConnections()
 
-    current_submissions = st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30)
-    verified = st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30)
+    current_submissions = preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30))
+    verified = preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=30))
 
     st.write(':green[**Current Submissions**]')
     st.data_editor(current_submissions)
