@@ -52,7 +52,7 @@ else:
             "Resume", display_text="Open Resume"
         ),
 
-        'LinkedIn Profile' : st.column_config.LinkColumn(
+        'LinkedIn Profile Link' : st.column_config.LinkColumn(
             "LinkedIn Profile", display_text="Open Profile"
         )
       }
