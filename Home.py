@@ -1,11 +1,10 @@
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+import time
 
 def establishSheetsConnections():
   st.session_state.conn = st.experimental_connection('gsheets', type=GSheetsConnection)
-
-
 
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
@@ -27,4 +26,18 @@ if not st.session_state.get('logged_in'):
 
 else:
   if st.session_state.logged_in == True:
-    st.success('Logged In')
+
+    with st.spinner('Logging In'):
+      time.sleep(3)
+
+    if not st.session_state.get('conn'):
+      establishSheetsConnections()
+
+    current_submissions = st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30)
+    verified = st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=30)
+
+    st.write(':green[**Current Submissions**]')
+    st.table(current_submissions)
+
+    st.write(':red[**Verified**]')
+    st.table(verified)
