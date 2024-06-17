@@ -123,7 +123,12 @@ def commitChanges(df):
     if option_to_commit == options[2]:
       existing_worksheets = Cacher.readWorksheets()
 
-      worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets)
+      if existing_worksheets:
+        worksheet = st.selectbox(label='Select an Existing Worksheet', placeholder='Select an Existing Worksheet', options=existing_worksheets)
+      else:
+        st.error('No Existing Worksheets Found')
+        time.sleep(5)
+        st.rerun()
       
 
 def getResponses():
