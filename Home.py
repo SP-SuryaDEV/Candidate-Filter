@@ -269,6 +269,12 @@ else:
     if department:
       st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
 
+    _first, _second, _third = bound.container().columns(3)
+
+    first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].unique()) 
+    second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].unique()) 
+    third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()) 
+
 
     _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
     _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
