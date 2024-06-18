@@ -164,7 +164,7 @@ def isValidEmail(email):
 
 if not st.session_state.get('logged_in'):
   st.session_state.logged_in = False
-  
+  st.set_page_config(title='Login')
   with st.form(key='login'):
     email = st.text_input('Enter Authorized Email:', placeholder='Email')
   
@@ -179,7 +179,7 @@ if not st.session_state.get('logged_in'):
 
 else:
   if st.session_state.logged_in == True:
-    st.set_page_config(layout='wide')
+    st.set_page_config(layout='wide', title='Dashboard')
 
     if not st.session_state.get('_loader_used'):
       with st.spinner('Logging In'):
