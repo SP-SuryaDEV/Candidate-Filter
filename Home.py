@@ -240,7 +240,7 @@ else:
 
     college_name = _college.text_input('College Name', placeholder='Enter College Name')
     year = _year.selectbox(
-      label='Select Year'
+      label='Select Year',
       options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
       index=None,
       placeholder='Select Year'
