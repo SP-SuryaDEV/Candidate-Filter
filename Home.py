@@ -224,9 +224,9 @@ else:
 
     if email != '':
       if email_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(email.lower())]
       else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
     
     
     changes = plotDataEditor(st.session_state.cs_filtered)
