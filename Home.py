@@ -242,7 +242,7 @@ else:
 
     _college_sw_toggle.write('')
     _college_sw_toggle.write('')
-    collge_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
+    college_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
     
     year = _year.selectbox(
       label='Select Year',
