@@ -192,10 +192,43 @@ else:
     current_submissions = getResponses()
     verified = getVerified()
 
-    bound = st.container(border=True)
-    _name, _n_sw_toggle, _phone, _ph_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.2])
-
     st.write('### :blue[**Current Submissions**]')
+
+    st.session_state.cs_filtered = current_submissions.copy()
+    
+    bound = st.container(border=True)
+    _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
+
+    name = _name.text_input('Name', placeholder='Enter Name')
+    
+    _n_sw_toggle.write('')
+    _n_sw_toggle.write('')
+    name_sw = _n_sw_toggle.toggle('Starts with', value=False)
+
+    phone = _phone.text_input('Phone', placeholder='Enter Phone')
+
+    _email_sw_toggle.write('')
+    _email_sw_toggle.write('')
+    email_sw = _email_sw_toggle.toggle('Starts with ', value=False)
+    
+    email = _email.text_input('Email', placeholder='Enter Email')
+
+    if name != '':
+      if name_sw:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().startswith(name.lower())]
+      else:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().contains(name.lower())]
+
+    if phone != '':
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.contains(phone)]
+
+    if email != '':
+      if email_sw:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().startswith(name.lower())]
+      else:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().contains(name.lower())]
+    
+    
     changes = plotDataEditor(current_submissions)
     
     st.write('### :gray[**Buffer**]')
