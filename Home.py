@@ -277,13 +277,13 @@ else:
 
     if first:
       if first != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].str.strip() == first.strip()]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[7]].str.strip() == first]
     if second:
       if second != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].str.strip() == second.strip()]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[12]].str.strip() == second]
     if third:
       if third != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].str.strip() == third.strip()]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[13]].str.strip() == third]
 
 
     _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
