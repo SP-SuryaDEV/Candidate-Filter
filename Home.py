@@ -269,11 +269,10 @@ else:
     if department:
       st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
 
-      
-    changes = plotDataEditor(st.session_state.cs_filtered)
     
     st.write('### :gray[**Buffer**]')
-    if len(changes) != 0:
+    if len(st.session_state.cs_filtered) != 0:
+      changes = plotDataEditor(st.session_state.cs_filtered)
       st.dataframe(evaluateChanges(changes))
     else:
       st.info('No Options to Select From.')
