@@ -220,7 +220,7 @@ else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.contains(name.lower())]
 
     if phone != '':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.contains(phone)]
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.startswith(phone)]
 
     if email != '':
       if email_sw:
