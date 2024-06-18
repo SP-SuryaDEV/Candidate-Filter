@@ -271,7 +271,7 @@ else:
 
 
     _, __, _count, *___ = bound.container().columns(5)
-    count.metric('Filtered Count', len(st.session_state.cs_filtered))
+    _count.metric('Filtered Count', len(st.session_state.cs_filtered))
 
 
     changes = plotDataEditor(st.session_state.cs_filtered)
