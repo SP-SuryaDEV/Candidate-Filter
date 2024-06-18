@@ -231,7 +231,7 @@ else:
       else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
         
-    _date, _college, _college_sw, _year, _department = bound.container().columns([0.2, 0.4, 0.2, 0.4, 0.2])
+    _date, _college, _college_sw, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
     
     date = _date.date_input('Date',
                               min_value=st.session_state.cs_filtered['Time'].min(),
