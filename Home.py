@@ -215,18 +215,18 @@ else:
 
     if name != '':
       if name_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().startswith(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.startswith(name.lower())]
       else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().contains(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.contains(name.lower())]
 
     if phone != '':
       st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.contains(phone)]
 
     if email != '':
       if email_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().startswith(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().str.startswith(name.lower())]
       else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().contains(name.lower())]
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().str.contains(name.lower())]
     
     
     changes = plotDataEditor(current_submissions)
