@@ -246,7 +246,7 @@ else:
       placeholder='Select Year'
     )
 
-    department = _department.selectbox(options=st.session_state.cs_filtered['Department'].unique(), index=None)
+    department = _department.selectbox(label='Select Department', options=st.session_state.cs_filtered['Department'].unique(), index=None)
     
     
     changes = plotDataEditor(st.session_state.cs_filtered)
