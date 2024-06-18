@@ -257,7 +257,7 @@ else:
       if date != 'All':
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y') == date]
 
-    if college_name = '':
+    if college_name != '':
       if college_sw:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.startswith(college_name.lower())]
       else:
