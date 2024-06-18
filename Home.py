@@ -231,18 +231,18 @@ else:
       else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
         
-    _date, _college, _college_sw, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
+    _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
     
     date = _date.selectbox(
       label='Select Date',
-      options=st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()
+      options=['All'] + list(st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()),
     )
 
     college_name = _college.text_input('College Name', placeholder='Enter College Name')
 
-    _college_sw.write('')
-    _college_sw.write('')
-    collge_sw = _college_sw.toggle('Starts with  ', value=False)
+    _college_sw_toggle.write('')
+    _college_sw_toggle.write('')
+    collge_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
     
     year = _year.selectbox(
       label='Select Year',
@@ -253,7 +253,23 @@ else:
 
     department = _department.selectbox(label='Select Department', options=st.session_state.cs_filtered['Department'].unique(), index=None)
     
-    
+    if date:
+      if date != 'All':
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y') == date]
+
+    if college_name = '':
+      if college_sw:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.startswith(college_name.lower())]
+      else:
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.contains(college_name.lower())]
+
+    if year:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Year'].str.strip() == year.strip()]
+
+    if department:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
+
+      
     changes = plotDataEditor(st.session_state.cs_filtered)
     
     st.write('### :gray[**Buffer**]')
