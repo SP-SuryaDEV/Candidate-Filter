@@ -147,10 +147,14 @@ def commitChanges(df):
       
 
 def getResponses():
+  ''' A Function to Get all submitted responses from Form Responses Worksheet'''
+  
   return preprocessSheet(st.session_state.conn.read(worksheet='Form responses 1', usecols = list(range(int(st.secrets.COLS))), ttl=150), 
-                                          select=True)
+                          select=True)
 
 def getVerified():
+  '''A Function to Get all verified responses from Verified Responses Worksheet'''
+  
   return preprocessSheet(st.session_state.conn.read(worksheet='Verified', usecols = list(range(int(st.secrets.COLS))), ttl=5))
 
 def isValidEmail(email):
@@ -188,11 +192,15 @@ else:
     current_submissions = getResponses()
     verified = getVerified()
 
+    bound = st.container(border=True)
+    _name, _n_sw_toggle, _phone, _ph_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.2])
+
     st.write('### :blue[**Current Submissions**]')
     changes = plotDataEditor(current_submissions)
     
     st.write('### :gray[**Buffer**]')
     st.dataframe(evaluateChanges(changes))
+    
     _, center, __ = st.columns([0.4, 0.45, 0.1])
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
