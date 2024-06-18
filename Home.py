@@ -270,6 +270,10 @@ else:
       st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
 
 
+    _, __, _count, *___ = bound.container().columns(5)
+    count.metric('Filtered Count', len(st.session_state.cs_filtered))
+
+
     changes = plotDataEditor(st.session_state.cs_filtered)
     
     st.write('### :gray[**Buffer**]')
