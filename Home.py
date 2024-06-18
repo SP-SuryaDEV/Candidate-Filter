@@ -271,8 +271,7 @@ else:
 
 
     _, __, _count, *___ = bound.container().columns([1, 0.8, 1, 1 ,1])
-    _count.write(':green[**Filtered Count**]')
-    _count.metric('Filtered Count', f'-   {len(st.session_state.cs_filtered)}   -')
+    _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
 
 
     changes = plotDataEditor(st.session_state.cs_filtered)
