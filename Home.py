@@ -237,6 +237,15 @@ else:
                               min_value=st.session_state.cs_filtered['Time'].min(),
                               max_value=st.session_state.cs_filtered['Time'].max()
                            )
+
+    college_name = _college.text_input('College Name', placeholder='Enter College Name')
+    year = _year.selectbox(
+      options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
+      index=None,
+      placeholder='Select Year'
+    )
+
+    department = _department.selectbox(options=st.session_state.cs_filtered['Department'].unique(), index=None)
     
     
     changes = plotDataEditor(st.session_state.cs_filtered)
