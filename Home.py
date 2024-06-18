@@ -273,7 +273,10 @@ else:
     changes = plotDataEditor(st.session_state.cs_filtered)
     
     st.write('### :gray[**Buffer**]')
-    st.dataframe(evaluateChanges(changes))
+    if len(changes) != 0:
+      st.dataframe(evaluateChanges(changes))
+    else:
+      st.info('No Options to Select From.')
     
     _, center, __ = st.columns([0.4, 0.45, 0.1])
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
