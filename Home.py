@@ -56,7 +56,7 @@ class Cacher:
       with open('worksheets.cache', 'a') as file:
         file.write(f'{worksheet_name}, ')
     else:
-      with opem('worksheets.cache', 'w') as file:
+      with open('worksheets.cache', 'w') as file:
         file.write(f'{worksheet_name}, ')
     
 
