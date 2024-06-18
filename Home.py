@@ -276,11 +276,14 @@ else:
     third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()))
 
     if first:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].str.strip() == first.strip()]
+      if first != 'Any':
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].str.strip() == first.strip()]
     if second:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].str.strip() == second.strip()]
+      if second != 'Any':
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].str.strip() == second.strip()]
     if third:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].str.strip() == third.strip()]
+      if third != 'Any':
+        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].str.strip() == third.strip()]
 
 
     _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
