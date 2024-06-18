@@ -234,7 +234,7 @@ else:
     _date, _college, _college_sw, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
     
     date = _date.selectbox(
-      label='Select Date'
+      label='Select Date',
       options=st.session_state.cs_filtered['Time'].dt.date.unique()
     )
 
