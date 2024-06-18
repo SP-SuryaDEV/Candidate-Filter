@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
+import datetime
 import time
 import os
 
@@ -17,6 +18,8 @@ def preprocessSheet(df, select=False):
   if select:
     df['Select'] = pd.Series([False for _ in range(len(df))])
     df = df[[time, name, 'Select'] + others]
+
+  df['Time'] = pd.to_datetime(df['Time'])
 
   return df
 
@@ -227,6 +230,11 @@ else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(email.lower())]
       else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
+
+
+    _date, _college, _year, _department = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
+
+    date = _date.date_input('Date', min_value=datetime.datetime(st.session_state.cs_filtered['Time']))
     
     
     changes = plotDataEditor(st.session_state.cs_filtered)
