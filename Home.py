@@ -229,7 +229,7 @@ else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.lower().str.contains(name.lower())]
     
     
-    changes = plotDataEditor(current_submissions)
+    changes = plotDataEditor(st.session_state.cs_filtered)
     
     st.write('### :gray[**Buffer**]')
     st.dataframe(evaluateChanges(changes))
