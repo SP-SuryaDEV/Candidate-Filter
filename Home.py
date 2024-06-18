@@ -231,7 +231,7 @@ else:
       else:
         st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
         
-    _date, _college, _year, _department = bound.container().columns([0.5, 0.2, 0.4, 0.2])
+    _date, _college, _college_sw, _year, _department = bound.container().columns([0.3, 0.4, 0.2, 0.4, 0.2])
     
     date = _date.date_input('Date',
                               min_value=st.session_state.cs_filtered['Time'].min(),
@@ -239,6 +239,11 @@ else:
                            )
 
     college_name = _college.text_input('College Name', placeholder='Enter College Name')
+
+    _college_sw.write('')
+    _college_sw.write('')
+    collge_sw = _college_sw.toggle('Starts with  ', value=False)
+    
     year = _year.selectbox(
       label='Select Year',
       options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
