@@ -272,7 +272,7 @@ else:
 
     _, __, _count, *___ = bound.container().columns([1, 0.8, 1, 1 ,1])
     _count.write(':green[**Filtered Count**]')
-    _count.metric(' ', len(st.session_state.cs_filtered))
+    _count.metric(' ', '  ' + str(len(st.session_state.cs_filtered)))
 
 
     changes = plotDataEditor(st.session_state.cs_filtered)
