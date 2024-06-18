@@ -233,10 +233,10 @@ else:
         
     _date, _college, _college_sw, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
     
-    date = _date.date_input('Date',
-                              min_value=st.session_state.cs_filtered['Time'].min(),
-                              max_value=st.session_state.cs_filtered['Time'].max()
-                           )
+    date = _date.selectbox(
+      label='Select Date'
+      options=st.session_state.cs_filtered['Time'].dt.date.unique()
+    )
 
     college_name = _college.text_input('College Name', placeholder='Enter College Name')
 
