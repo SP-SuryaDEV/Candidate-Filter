@@ -235,7 +235,7 @@ else:
     
     date = _date.selectbox(
       label='Select Date',
-      options=st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').dt.unique()
+      options=st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()
     )
 
     college_name = _college.text_input('College Name', placeholder='Enter College Name')
