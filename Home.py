@@ -234,8 +234,8 @@ else:
     _date, _college, _year, _department = bound.container().columns([0.5, 0.2, 0.4, 0.2])
     
     date = _date.date_input('Date',
-                              min_value=datetime.datetime(st.session_state.cs_filtered['Time'].min()),
-                              max_value=datetime.datetime(st.session_state.cs_filtered['Time'].max())
+                              min_value=st.session_state.cs_filtered['Time'].min(),
+                              max_value=st.session_state.cs_filtered['Time'].max()
                            )
     
     
