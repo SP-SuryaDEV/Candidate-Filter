@@ -275,6 +275,13 @@ else:
     second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].unique()))
     third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()))
 
+    if first:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'] == first]
+    if second:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'] == second]
+    if third:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'] == third]
+
 
     _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
     _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
