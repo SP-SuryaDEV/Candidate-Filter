@@ -337,7 +337,7 @@ else:
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
     st.write('### :green[**Verified**]')
-    plotDataEditor(st.session_state.verified)
+    plotDataEditor(st.session_state.sheet2)
 
     commit = st.button('Commit Changes')
 
