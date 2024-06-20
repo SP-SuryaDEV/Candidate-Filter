@@ -213,9 +213,9 @@ def Filter(sheet):
 
   if name != '':
     if name_sw:
-      sheet = st.session_state.sheet[sheet['Name'].str.lower().str.startswith(name.lower())]
+      sheet = sheet[sheet['Name'].str.lower().str.startswith(name.lower())]
     else:
-      sheet = st.session_state.sheet1[sheet['Name'].str.lower().str.contains(name.lower())]
+      sheet = sheet[sheet['Name'].str.lower().str.contains(name.lower())]
 
   if phone != '':
     sheet = sheet[sheet['Phone number'].str.startswith(phone)]
