@@ -151,7 +151,7 @@ def commitChanges(df):
 
 def setBuffer(df):
   st.session_state.sheet1['Select'] = pd.Series([False for _ in len(st.session_state.sheet1)])
-
+  st.session_state.buffer = df.copy()
 
 @st.experimental_dialog("Load Predefined Buffer?")
 def predefinedBufferOptions(sheet1, sheet2):
