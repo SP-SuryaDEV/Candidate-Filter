@@ -248,7 +248,7 @@ def Filter(sheet):
     options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
     index=None,
     placeholder='Select Year',
-    , key=f'{key+8}'
+    key=f'{key+8}'
   )
 
   department = _department.selectbox(label='Department', options=sheet['Department'].unique(), index=None,
