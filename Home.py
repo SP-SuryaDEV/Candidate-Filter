@@ -171,13 +171,13 @@ def predefinedBufferOptions(sheet1, sheet2):
 
   if option:
     if option == options[0]:
-      return setBuffer(sheet1.merge(sheet2, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+      setBuffer(sheet1.merge(sheet2, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
     elif option == options[1]:
-      return setBuffer(sheet2.merge(sheet1, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+      setBuffer(sheet2.merge(sheet1, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
     elif option == options[2]:
-      return setBuffer(pd.merge(sheet1, sheet2))
+      setBuffer(pd.merge(sheet1, sheet2))
     elif option == options[3]:
-      return setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
+      setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
 
   
 
@@ -350,7 +350,8 @@ else:
     st.divider()
     
     st.write('## :green[**Verified**]')
-    Filter(st.session_state.sheet2, 40)
+    with st.expander('Filter'):
+      Filter(st.session_state.sheet2, 40)
     plotDataEditor(st.session_state.sheet2)
 
     commit = st.button('Commit Changes')
