@@ -331,8 +331,9 @@ else:
     
     st.write('### :gray[**Buffer**]')
     if len(st.session_state.sheet1) != 0:
+      st.session_state.buffer = evaluateChanges(st.session_state.buffer)
       Filter(st.session_state.buffer, 20)
-      st.dataframe(evaluateChanges(st.session_state.buffer))
+      st.dataframe(st.session_state.buffer)
     else:
       st.info('No Options to Select From.')
     
