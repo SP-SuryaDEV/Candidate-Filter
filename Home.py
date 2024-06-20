@@ -206,7 +206,7 @@ def Filter(sheet):
   _n_sw_toggle.write('')
   name_sw = _n_sw_toggle.toggle('Starts with', value=False, key=f'{key+1}')
 
-  phone = _phone.text_input('Phone', placeholder='Enter Phone', key='{key+2}')
+  phone = _phone.text_input('Phone', placeholder='Enter Phone', key=f'{key+2}')
 
   _email_sw_toggle.write('')
   _email_sw_toggle.write('')
