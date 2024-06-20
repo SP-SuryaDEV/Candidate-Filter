@@ -285,7 +285,7 @@ def Filter(sheet):
   _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
   _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
 
-
+  return sheet
 
 
 if not st.session_state.get('logged_in'):
@@ -322,8 +322,8 @@ else:
 
     st.session_state.sheet1 = current_submissions.copy()
     
-    Filter(st.session_state.sheet1)
-
+    st.session_state.sheet1 = Filter(st.session_state.sheet1)
+    
 
     st.session_state.buffer = plotDataEditor(st.session_state.sheet1)
     
