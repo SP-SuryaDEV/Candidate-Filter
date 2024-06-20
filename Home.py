@@ -195,22 +195,24 @@ def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
 
 def Filter(sheet):
+  key=random.rand(0, 100000000)
+  
   bound = st.container(border=True)
   _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
 
-  name = _name.text_input('Name', placeholder='Enter Name', key=f'{random.randint(0, 100000000)}')
+  name = _name.text_input('Name', placeholder='Enter Name', key=f'{key}')
   
   _n_sw_toggle.write('')
   _n_sw_toggle.write('')
-  name_sw = _n_sw_toggle.toggle('Starts with', value=False)
+  name_sw = _n_sw_toggle.toggle('Starts with', value=False, key=f'{key+1}')
 
-  phone = _phone.text_input('Phone', placeholder='Enter Phone')
+  phone = _phone.text_input('Phone', placeholder='Enter Phone', key='{key+2}')
 
   _email_sw_toggle.write('')
   _email_sw_toggle.write('')
-  email_sw = _email_sw_toggle.toggle('Starts with ', value=False)
+  email_sw = _email_sw_toggle.toggle('Starts with ', value=False, key=f'{key+3}')
   
-  email = _email.text_input('Email', placeholder='Enter Email')
+  email = _email.text_input('Email', placeholder='Enter Email', key=f'{key+4}')
 
   if name != '':
     if name_sw:
@@ -232,23 +234,25 @@ def Filter(sheet):
   date = _date.selectbox(
     label='Date',
     options=['All'] + list(sheet['Time'].dt.strftime('%d-%m-%Y').unique()),
+    key=f'{key+5}'
   )
 
-  college_name = _college.text_input('College Name', placeholder='Enter College Name')
+  college_name = _college.text_input('College Name', placeholder='Enter College Name', , key=f'{key+6}')
 
   _college_sw_toggle.write('')
   _college_sw_toggle.write('')
-  college_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
+  college_sw = _college_sw_toggle.toggle('Starts with  ', value=False, key=f'{key+7}')
   
   year = _year.selectbox(
     label='Year',
     options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
     index=None,
-    placeholder='Select Year'
+    placeholder='Select Year',
+    , key=f'{key+8}'
   )
 
   department = _department.selectbox(label='Department', options=sheet['Department'].unique(), index=None,
-                                    placeholder='Select Department')
+                                    placeholder='Select Department', key=f'{key+9}')
   
   if date:
     if date != 'All':
@@ -268,9 +272,9 @@ def Filter(sheet):
 
   _first, _second, _third = bound.container().columns(3)
 
-  first = _first.selectbox('1st Priority', ['Any'] + list(sheet['Which skill do you prioritize the most (1st priority)?'].unique()))
-  second = _second.selectbox('2nd Priority', ['Any'] + list(sheet['Which skill do you prioritize next (2nd priority)?'].unique()))
-  third = _third.selectbox('3rd Priority', ['Any'] + list(sheet['Which skill do you prioritize after that (3rd priority)?'].unique()))
+  first = _first.selectbox('1st Priority', ['Any'] + list(sheet['Which skill do you prioritize the most (1st priority)?'].unique()), key=f'{key+10}')
+  second = _second.selectbox('2nd Priority', ['Any'] + list(sheet['Which skill do you prioritize next (2nd priority)?'].unique()), key=f'{key+11}')
+  third = _third.selectbox('3rd Priority', ['Any'] + list(sheet['Which skill do you prioritize after that (3rd priority)?'].unique()), key=f'{key+12}')
 
   if first:
     if first != 'Any':
@@ -284,7 +288,7 @@ def Filter(sheet):
 
 
   _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
+  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -', key=f'{key+13}')
 
   return sheet
 
