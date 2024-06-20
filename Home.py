@@ -271,7 +271,7 @@ def Filter(sheet, key):
       sheet = sheet[sheet[sheet.columns[13]].str.strip() == third]
 
 
-  _, __, _count, *___ = bound.container().columns([1, 1.5, 1, 1 ,1])
+  _, __, _count, *___ = bound.container().columns([1, 1.6, 1, 1 ,1])
   _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
 
       
