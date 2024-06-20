@@ -150,7 +150,7 @@ def commitChanges(df):
         st.error('No Existing Worksheets Found')
 
 def setBuffer(df):
-  st.session_state.sheet1['Select'] = pd.Series([False for _ in len(st.session_state.sheet1)])
+  st.session_state.sheet1['Select'] = pd.Series([False for _ in range(len(st.session_state.sheet1))])
   st.session_state.buffer = df.copy()
 
 @st.experimental_dialog("Load Predefined Buffer?")
