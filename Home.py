@@ -152,7 +152,7 @@ def setBuffer(df):
   st.session_state.cs_filtered['Select'] = pd.Series([False for _ in len(st.session_state.cs_filtered)])
 
 
-@st.experimental_fragment("Load Predefined Buffer?")
+@st.experimental_dialog("Load Predefined Buffer?")
 def predefinedBufferOptions(sheet1, sheet2):
   options = [
     'In Sheet1, Not in Sheet2',
