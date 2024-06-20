@@ -147,6 +147,36 @@ def commitChanges(df):
           st.rerun()
       else:
         st.error('No Existing Worksheets Found')
+
+def setBuffer(df):
+  st.session_state.cs_filtered['Select'] = pd.Series([False for _ in len(st.session_state.cs_filtered])
+
+
+@st.experimental_fragment("Load Predefined Buffer?")
+def predefinedBufferOptions(sheet1, sheet2):
+  options = [
+    'In Sheet1, Not in Sheet2',
+    'In Sheet2, Not in Sheet1'
+    'Both in Sheet1 and Sheet2 only [Intersection]',
+    'Merge both sheets and Remove Duplicates [Union]'
+  ]
+
+  option = st.selectbox(
+    options=options,
+    label='Predefined Option',
+    placeholder='Select Predefined Option',
+    index=None
+  )
+
+  if option:
+    if option == options[0]:
+      setBuffer(sheet1.merge(sheet2, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+    elif option == options[1]:
+      setBuffer(sheet2.merge(sheet1, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+    elif option == options[2]:
+      setBuffer(pd.merge(sheet1, sheet2))
+    elif option == options[3]:
+      setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
       
 
 def getResponses():
@@ -162,6 +192,99 @@ def getVerified():
 
 def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
+
+def Filter(sheet):
+  bound = st.container(border=True)
+  _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
+
+  name = _name.text_input('Name', placeholder='Enter Name')
+  
+  _n_sw_toggle.write('')
+  _n_sw_toggle.write('')
+  name_sw = _n_sw_toggle.toggle('Starts with', value=False)
+
+  phone = _phone.text_input('Phone', placeholder='Enter Phone')
+
+  _email_sw_toggle.write('')
+  _email_sw_toggle.write('')
+  email_sw = _email_sw_toggle.toggle('Starts with ', value=False)
+  
+  email = _email.text_input('Email', placeholder='Enter Email')
+
+  if name != '':
+    if name_sw:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.startswith(name.lower())]
+    else:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.contains(name.lower())]
+
+  if phone != '':
+    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.startswith(phone)]
+
+  if email != '':
+    if email_sw:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(email.lower())]
+    else:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
+      
+  _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
+  
+  date = _date.selectbox(
+    label='Date',
+    options=['All'] + list(st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()),
+  )
+
+  college_name = _college.text_input('College Name', placeholder='Enter College Name')
+
+  _college_sw_toggle.write('')
+  _college_sw_toggle.write('')
+  college_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
+  
+  year = _year.selectbox(
+    label='Year',
+    options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
+    index=None,
+    placeholder='Select Year'
+  )
+
+  department = _department.selectbox(label='Department', options=st.session_state.cs_filtered['Department'].unique(), index=None,
+                                    placeholder='Select Department')
+  
+  if date:
+    if date != 'All':
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y') == date]
+
+  if college_name != '':
+    if college_sw:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.startswith(college_name.lower())]
+    else:
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.contains(college_name.lower())]
+
+  if year:
+    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Year'].str.strip() == year.strip()]
+
+  if department:
+    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
+
+  _first, _second, _third = bound.container().columns(3)
+
+  first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].unique()))
+  second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].unique()))
+  third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()))
+
+  if first:
+    if first != 'Any':
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[7]].str.strip() == first]
+  if second:
+    if second != 'Any':
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[12]].str.strip() == second]
+  if third:
+    if third != 'Any':
+      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[13]].str.strip() == third]
+
+
+  _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
+  _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
+
 
 
 
@@ -199,95 +322,7 @@ else:
 
     st.session_state.cs_filtered = current_submissions.copy()
     
-    bound = st.container(border=True)
-    _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
-
-    name = _name.text_input('Name', placeholder='Enter Name')
-    
-    _n_sw_toggle.write('')
-    _n_sw_toggle.write('')
-    name_sw = _n_sw_toggle.toggle('Starts with', value=False)
-
-    phone = _phone.text_input('Phone', placeholder='Enter Phone')
-
-    _email_sw_toggle.write('')
-    _email_sw_toggle.write('')
-    email_sw = _email_sw_toggle.toggle('Starts with ', value=False)
-    
-    email = _email.text_input('Email', placeholder='Enter Email')
-
-    if name != '':
-      if name_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.startswith(name.lower())]
-      else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.contains(name.lower())]
-
-    if phone != '':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.startswith(phone)]
-
-    if email != '':
-      if email_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(email.lower())]
-      else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
-        
-    _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
-    
-    date = _date.selectbox(
-      label='Select Date',
-      options=['All'] + list(st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()),
-    )
-
-    college_name = _college.text_input('College Name', placeholder='Enter College Name')
-
-    _college_sw_toggle.write('')
-    _college_sw_toggle.write('')
-    college_sw = _college_sw_toggle.toggle('Starts with  ', value=False)
-    
-    year = _year.selectbox(
-      label='Select Year',
-      options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
-      index=None,
-      placeholder='Select Year'
-    )
-
-    department = _department.selectbox(label='Select Department', options=st.session_state.cs_filtered['Department'].unique(), index=None)
-    
-    if date:
-      if date != 'All':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y') == date]
-
-    if college_name != '':
-      if college_sw:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.startswith(college_name.lower())]
-      else:
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.contains(college_name.lower())]
-
-    if year:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Year'].str.strip() == year.strip()]
-
-    if department:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
-
-    _first, _second, _third = bound.container().columns(3)
-
-    first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].unique()))
-    second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].unique()))
-    third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()))
-
-    if first:
-      if first != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[7]].str.strip() == first]
-    if second:
-      if second != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[12]].str.strip() == second]
-    if third:
-      if third != 'Any':
-        st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[13]].str.strip() == third]
-
-
-    _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-    _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
+    Filter(st.session_state.cs_filtered)
 
 
     changes = plotDataEditor(st.session_state.cs_filtered)
