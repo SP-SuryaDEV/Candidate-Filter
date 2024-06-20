@@ -323,13 +323,13 @@ else:
 
     
 
-    st.write('### :blue[**Current Submissions**]')
+    st.write('## :blue[**Current Submissions**]')
     Filter(st.session_state.sheet1, 1)
 
 
     st.session_state.buffer = plotDataEditor(st.session_state.sheet1)
     
-    st.write('### :gray[**Buffer**]')
+    st.write('## :gray[**Buffer**]')
     if len(st.session_state.sheet1) != 0:
       st.session_state.buffer = evaluateChanges(st.session_state.buffer)
       Filter(st.session_state.buffer, 20)
@@ -342,7 +342,7 @@ else:
 
 
     
-    st.write('### :green[**Verified**]')
+    st.write('## :green[**Verified**]')
     Filter(st.session_state.sheet2, 40)
     plotDataEditor(st.session_state.sheet2)
 
