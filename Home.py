@@ -237,7 +237,7 @@ def Filter(sheet):
     key=f'{key+5}'
   )
 
-  college_name = _college.text_input('College Name', placeholder='Enter College Name', , key=f'{key+6}')
+  college_name = _college.text_input('College Name', placeholder='Enter College Name', key=f'{key+6}')
 
   _college_sw_toggle.write('')
   _college_sw_toggle.write('')
