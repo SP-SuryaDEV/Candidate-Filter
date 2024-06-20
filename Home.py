@@ -178,6 +178,102 @@ def predefinedBufferOptions(sheet1, sheet2):
       setBuffer(pd.merge(sheet1, sheet2))
     elif option == options[3]:
       setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
+
+
+def Filter(sheet, key):
+  bound = st.container(border=True)
+  _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
+
+  name = _name.text_input('Name', placeholder='Enter Name', key=f'{key}')
+  
+  _n_sw_toggle.write('')
+  _n_sw_toggle.write('')
+  name_sw = _n_sw_toggle.toggle('Starts with', value=False, key=f'{key+1}')
+
+  phone = _phone.text_input('Phone', placeholder='Enter Phone', key=f'{key+2}')
+
+  _email_sw_toggle.write('')
+  _email_sw_toggle.write('')
+  email_sw = _email_sw_toggle.toggle('Starts with ', value=False, key=f'{key+3}')
+  
+  email = _email.text_input('Email', placeholder='Enter Email', key=f'{key+4}')
+
+  if name != '':
+    if name_sw:
+      sheet = sheet[sheet['Name'].str.lower().str.startswith(name.lower())]
+    else:
+      sheet = sheet[sheet['Name'].str.lower().str.contains(name.lower())]
+
+  if phone != '':
+    sheet = sheet[sheet['Phone number'].str.startswith(phone)]
+
+  if email != '':
+    if email_sw:
+      sheet = sheet[sheet['Email'].str.startswith(email.lower())]
+    else:
+      sheet = sheet[sheet['Email'].str.contains(email.lower())]
+      
+  _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
+  
+  date = _date.selectbox(
+    label='Date',
+    options=['All'] + list(sheet['Time'].dt.strftime('%d-%m-%Y').unique()),
+    key=f'{key+5}'
+  )
+
+  college_name = _college.text_input('College Name', placeholder='Enter College Name', key=f'{key+6}')
+
+  _college_sw_toggle.write('')
+  _college_sw_toggle.write('')
+  college_sw = _college_sw_toggle.toggle('Starts with  ', value=False, key=f'{key+7}')
+  
+  year = _year.selectbox(
+    label='Year',
+    options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
+    index=None,
+    placeholder='Select Year',
+    key=f'{key+8}'
+  )
+
+  department = _department.selectbox(label='Department', options=sheet['Department'].unique(), index=None,
+                                    placeholder='Select Department', key=f'{key+9}')
+  
+  if date:
+    if date != 'All':
+      sheet = sheet[sheet['Time'].dt.strftime('%d-%m-%Y') == date]
+
+  if college_name != '':
+    if college_sw:
+      sheet = sheet[sheet['College'].str.startswith(college_name.lower())]
+    else:
+      sheet = sheet[sheet['College'].str.contains(college_name.lower())]
+
+  if year:
+    sheet = sheet[sheet['Year'].str.strip() == year.strip()]
+
+  if department:
+    sheet = sheet[sheet['Department'].str.strip() == department.strip()]
+
+  _first, _second, _third = bound.container().columns(3)
+
+  first = _first.selectbox('1st Priority', ['Any'] + list(sheet['Which skill do you prioritize the most (1st priority)?'].unique()), key=f'{key+10}')
+  second = _second.selectbox('2nd Priority', ['Any'] + list(sheet['Which skill do you prioritize next (2nd priority)?'].unique()), key=f'{key+11}')
+  third = _third.selectbox('3rd Priority', ['Any'] + list(sheet['Which skill do you prioritize after that (3rd priority)?'].unique()), key=f'{key+12}')
+
+  if first:
+    if first != 'Any':
+      sheet = sheet[sheet[sheet.columns[7]].str.strip() == first]
+  if second:
+    if second != 'Any':
+      sheet = sheet[sheet[sheet.columns[12]].str.strip() == second]
+  if third:
+    if third != 'Any':
+      sheet = sheet[sheet[sheet.columns[13]].str.strip() == third]
+
+
+  _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
+  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
+
       
 
 def getResponses():
@@ -222,116 +318,20 @@ else:
     if not st.session_state.get('conn'):
       establishSheetsConnections()
 
-    sheet1 = getResponses()
-    sheet2 = getVerified()
+    st.session_state.sheet1 = getResponses()
+    st.session_state.sheet2 = getVerified()
 
-    st.session_state.sheet1 = sheet1.copy()
-    st.session_state.sheet2 = sheet2.copy()
     
 
     st.write('### :blue[**Current Submissions**]')
+    Filter(st.session_state.sheet1, 1)
 
-    
-    key=1
-    bound = st.container(border=True)
-    _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
-  
-    name = _name.text_input('Name', placeholder='Enter Name', key=f'{key}')
-    
-    _n_sw_toggle.write('')
-    _n_sw_toggle.write('')
-    name_sw = _n_sw_toggle.toggle('Starts with', value=False, key=f'{key+1}')
-  
-    phone = _phone.text_input('Phone', placeholder='Enter Phone', key=f'{key+2}')
-  
-    _email_sw_toggle.write('')
-    _email_sw_toggle.write('')
-    email_sw = _email_sw_toggle.toggle('Starts with ', value=False, key=f'{key+3}')
-    
-    email = _email.text_input('Email', placeholder='Enter Email', key=f'{key+4}')
-  
-    if name != '':
-      if name_sw:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Name'].str.lower().str.startswith(name.lower())]
-      else:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Name'].str.lower().str.contains(name.lower())]
-  
-    if phone != '':
-      st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Phone number'].str.startswith(phone)]
-  
-    if email != '':
-      if email_sw:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Email'].str.startswith(email.lower())]
-      else:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Email'].str.contains(email.lower())]
-        
-    _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
-    
-    date = _date.selectbox(
-      label='Date',
-      options=['All'] + list(st.session_state.sheet1['Time'].dt.strftime('%d-%m-%Y').unique()),
-      key=f'{key+5}'
-    )
-  
-    college_name = _college.text_input('College Name', placeholder='Enter College Name', key=f'{key+6}')
-  
-    _college_sw_toggle.write('')
-    _college_sw_toggle.write('')
-    college_sw = _college_sw_toggle.toggle('Starts with  ', value=False, key=f'{key+7}')
-    
-    year = _year.selectbox(
-      label='Year',
-      options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
-      index=None,
-      placeholder='Select Year',
-      key=f'{key+8}'
-    )
-  
-    department = _department.selectbox(label='Department', options=st.session_state.sheet1['Department'].unique(), index=None,
-                                      placeholder='Select Department', key=f'{key+9}')
-    
-    if date:
-      if date != 'All':
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Time'].dt.strftime('%d-%m-%Y') == date]
-  
-    if college_name != '':
-      if college_sw:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['College'].str.startswith(college_name.lower())]
-      else:
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['College'].str.contains(college_name.lower())]
-  
-    if year:
-      st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Year'].str.strip() == year.strip()]
-  
-    if department:
-      st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1['Department'].str.strip() == department.strip()]
-  
-    _first, _second, _third = bound.container().columns(3)
-  
-    first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.sheet1['Which skill do you prioritize the most (1st priority)?'].unique()), key=f'{key+10}')
-    second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.sheet1['Which skill do you prioritize next (2nd priority)?'].unique()), key=f'{key+11}')
-    third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.sheet1['Which skill do you prioritize after that (3rd priority)?'].unique()), key=f'{key+12}')
-  
-    if first:
-      if first != 'Any':
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1[st.session_state.sheet1.columns[7]].str.strip() == first]
-    if second:
-      if second != 'Any':
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1[st.session_state.sheet1.columns[12]].str.strip() == second]
-    if third:
-      if third != 'Any':
-        st.session_state.sheet1 = st.session_state.sheet1[st.session_state.sheet1[st.session_state.sheet1.columns[13]].str.strip() == third]
-  
-  
-    _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-    _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.sheet1)}   -')
-
-    
 
     st.session_state.buffer = plotDataEditor(st.session_state.sheet1)
     
     st.write('### :gray[**Buffer**]')
     if len(st.session_state.sheet1) != 0:
+      Filter(st.session_state.buffer, 20)
       st.dataframe(evaluateChanges(st.session_state.buffer))
     else:
       st.info('No Options to Select From.')
@@ -342,104 +342,7 @@ else:
 
     
     st.write('### :green[**Verified**]')
-
-
-    
-    key=20 
-    bound = st.container(border=True)
-    _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
-  
-    name = _name.text_input('Name', placeholder='Enter Name', key=f'{key}')
-    
-    _n_sw_toggle.write('')
-    _n_sw_toggle.write('')
-    name_sw = _n_sw_toggle.toggle('Starts with', value=False, key=f'{key+1}')
-  
-    phone = _phone.text_input('Phone', placeholder='Enter Phone', key=f'{key+2}')
-  
-    _email_sw_toggle.write('')
-    _email_sw_toggle.write('')
-    email_sw = _email_sw_toggle.toggle('Starts with ', value=False, key=f'{key+3}')
-    
-    email = _email.text_input('Email', placeholder='Enter Email', key=f'{key+4}')
-  
-    if name != '':
-      if name_sw:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Name'].str.lower().str.startswith(name.lower())]
-      else:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Name'].str.lower().str.contains(name.lower())]
-  
-    if phone != '':
-      st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Phone number'].str.startswith(phone)]
-  
-    if email != '':
-      if email_sw:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Email'].str.startswith(email.lower())]
-      else:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Email'].str.contains(email.lower())]
-        
-    _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
-    
-    date = _date.selectbox(
-      label='Date',
-      options=['All'] + list(st.session_state.sheet2['Time'].dt.strftime('%d-%m-%Y').unique()),
-      key=f'{key+5}'
-    )
-  
-    college_name = _college.text_input('College Name', placeholder='Enter College Name', key=f'{key+6}')
-  
-    _college_sw_toggle.write('')
-    _college_sw_toggle.write('')
-    college_sw = _college_sw_toggle.toggle('Starts with  ', value=False, key=f'{key+7}')
-    
-    year = _year.selectbox(
-      label='Year',
-      options=['1st Year', '2nd Year', '3rd Year', '4th Year'],
-      index=None,
-      placeholder='Select Year',
-      key=f'{key+8}'
-    )
-  
-    department = _department.selectbox(label='Department', options=st.session_state.sheet2['Department'].unique(), index=None,
-                                      placeholder='Select Department', key=f'{key+9}')
-    
-    if date:
-      if date != 'All':
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Time'].dt.strftime('%d-%m-%Y') == date]
-  
-    if college_name != '':
-      if college_sw:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['College'].str.startswith(college_name.lower())]
-      else:
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['College'].str.contains(college_name.lower())]
-  
-    if year:
-      st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Year'].str.strip() == year.strip()]
-  
-    if department:
-      st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2['Department'].str.strip() == department.strip()]
-  
-    _first, _second, _third = bound.container().columns(3)
-  
-    first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.sheet2['Which skill do you prioritize the most (1st priority)?'].unique()), key=f'{key+10}')
-    second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.sheet2['Which skill do you prioritize next (2nd priority)?'].unique()), key=f'{key+11}')
-    third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.sheet2['Which skill do you prioritize after that (3rd priority)?'].unique()), key=f'{key+12}')
-  
-    if first:
-      if first != 'Any':
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2[st.session_state.sheet2.columns[7]].str.strip() == first]
-    if second:
-      if second != 'Any':
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2[st.session_state.sheet2.columns[12]].str.strip() == second]
-    if third:
-      if third != 'Any':
-        st.session_state.sheet2 = st.session_state.sheet2[st.session_state.sheet2[st.session_state.sheet2.columns[13]].str.strip() == third]
-  
-  
-    _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-    _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.sheet2)}   -')
-
-    
+    Filter(st.session_state.sheet2, 40)
     plotDataEditor(st.session_state.sheet2)
 
     commit = st.button('Commit Changes')
