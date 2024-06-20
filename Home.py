@@ -222,8 +222,12 @@ else:
     if not st.session_state.get('conn'):
       establishSheetsConnections()
 
-    st.session_state.sheet1 = getResponses()
-    st.session_state.sheet2 = getVerified()
+    sheet1 = getResponses()
+    sheet2 = getVerified()
+
+    st.session_state.sheet1 = sheet1.copy()
+    st.session_state.sheet2 = sheet2.copy()
+    
 
     st.write('### :blue[**Current Submissions**]')
 
