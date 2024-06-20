@@ -158,7 +158,7 @@ def setBuffer(df):
 def predefinedBufferOptions(sheet1, sheet2):
   options = [
     'In Sheet1, Not in Sheet2',
-    'In Sheet2, Not in Sheet1'
+    'In Sheet2, Not in Sheet1',
     'Both in Sheet1 and Sheet2 only [Intersection]',
     'Merge both sheets and Remove Duplicates [Union]'
   ]
