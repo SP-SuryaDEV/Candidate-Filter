@@ -3,6 +3,7 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import datetime
 import time
+import random
 import os
 
 def establishSheetsConnections():
@@ -197,7 +198,7 @@ def Filter(sheet):
   bound = st.container(border=True)
   _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
 
-  name = _name.text_input('Name', placeholder='Enter Name')
+  name = _name.text_input('Name', placeholder='Enter Name', key=f'{random.randint(0)}')
   
   _n_sw_toggle.write('')
   _n_sw_toggle.write('')
