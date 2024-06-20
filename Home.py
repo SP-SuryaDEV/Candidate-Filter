@@ -338,7 +338,7 @@ else:
     use_predefined_buffer_options = center.toggle('Use Predifined Buffer Options', value=False)
 
     if use_predefined_buffer_options:
-      predefinedBufferOptions(st.session_state.sheet1, st.session_state.sheet2)
+      st.session_state.buffer = predefinedBufferOptions(st.session_state.sheet1, st.session_state.sheet2)
       st.dataframe(st.session_state.buffer)
     else:
       if len(st.session_state.sheet1) != 0:
