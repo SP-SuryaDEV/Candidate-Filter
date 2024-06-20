@@ -329,7 +329,7 @@ else:
     
     st.write('### :gray[**Buffer**]')
     if len(st.session_state.sheet1) != 0:
-      st.dataframe(evaluateChanges(changes))
+      st.dataframe(evaluateChanges(st.session_state.buffer))
     else:
       st.info('No Options to Select From.')
     
@@ -337,12 +337,12 @@ else:
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
     st.write('### :green[**Verified**]')
-    plotDataEditor(verified)
+    plotDataEditor(st.session_state.verified)
 
     commit = st.button('Commit Changes')
 
     if commit:
-      eval_changes = evaluateChanges(changes)
-      commitChanges(eval_changes)
+      eval_changes = evaluateChanges(st.session_state.buffer)
+      commitChanges(st.session_state.buffer)
 
   
