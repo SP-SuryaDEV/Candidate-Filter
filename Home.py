@@ -179,6 +179,7 @@ def predefinedBufferOptions(sheet1, sheet2):
     elif option == options[3]:
       setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
 
+  st.rerun()
 
 def Filter(sheet, key):
   bound = st.container(border=True)
