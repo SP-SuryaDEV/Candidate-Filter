@@ -326,7 +326,7 @@ else:
 
     st.write('## :blue[**Current Submissions**]')
     Filter(st.session_state.sheet1, 1)
-    st.session_state.buffer = plotDataEditor(st.session_state.sheet1)
+    buffer = plotDataEditor(st.session_state.sheet1)
 
     st.divider()
     
@@ -340,7 +340,7 @@ else:
       st.dataframe(st.session_state.buffer)
     else:
       if len(st.session_state.sheet1) != 0:
-        st.session_state.buffer = evaluateChanges(st.session_state.buffer)
+        st.session_state.buffer = evaluateChanges(buffer)
         Filter(st.session_state.buffer, 20)
         st.dataframe(st.session_state.buffer)
       else:
