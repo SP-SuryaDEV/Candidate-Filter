@@ -149,7 +149,7 @@ def commitChanges(df):
         st.error('No Existing Worksheets Found')
 
 def setBuffer(df):
-  st.session_state.cs_filtered['Select'] = pd.Series([False for _ in len(st.session_state.cs_filtered)])
+  st.session_state.sheet1['Select'] = pd.Series([False for _ in len(st.session_state.sheet1)])
 
 
 @st.experimental_dialog("Load Predefined Buffer?")
@@ -213,24 +213,24 @@ def Filter(sheet):
 
   if name != '':
     if name_sw:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.startswith(name.lower())]
+      sheet = st.session_state.sheet[sheet['Name'].str.lower().str.startswith(name.lower())]
     else:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Name'].str.lower().str.contains(name.lower())]
+      sheet = st.session_state.sheet1[sheet['Name'].str.lower().str.contains(name.lower())]
 
   if phone != '':
-    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Phone number'].str.startswith(phone)]
+    sheet = sheet[sheet['Phone number'].str.startswith(phone)]
 
   if email != '':
     if email_sw:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.startswith(email.lower())]
+      sheet = sheet[sheet['Email'].str.startswith(email.lower())]
     else:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Email'].str.contains(email.lower())]
+      sheet = sheet[sheet['Email'].str.contains(email.lower())]
       
   _date, _college, _college_sw_toggle, _year, _department = bound.container().columns([0.2, 0.5, 0.2, 0.3, 0.2])
   
   date = _date.selectbox(
     label='Date',
-    options=['All'] + list(st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y').unique()),
+    options=['All'] + list(sheet['Time'].dt.strftime('%d-%m-%Y').unique()),
   )
 
   college_name = _college.text_input('College Name', placeholder='Enter College Name')
@@ -246,44 +246,44 @@ def Filter(sheet):
     placeholder='Select Year'
   )
 
-  department = _department.selectbox(label='Department', options=st.session_state.cs_filtered['Department'].unique(), index=None,
+  department = _department.selectbox(label='Department', options=sheet['Department'].unique(), index=None,
                                     placeholder='Select Department')
   
   if date:
     if date != 'All':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Time'].dt.strftime('%d-%m-%Y') == date]
+      sheet = sheet[sheet['Time'].dt.strftime('%d-%m-%Y') == date]
 
   if college_name != '':
     if college_sw:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.startswith(college_name.lower())]
+      sheet = sheet[sheet['College'].str.startswith(college_name.lower())]
     else:
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['College'].str.contains(college_name.lower())]
+      sheet = sheet[sheet['College'].str.contains(college_name.lower())]
 
   if year:
-    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Year'].str.strip() == year.strip()]
+    sheet = sheet[sheet['Year'].str.strip() == year.strip()]
 
   if department:
-    st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered['Department'].str.strip() == department.strip()]
+    sheet = sheet[sheet['Department'].str.strip() == department.strip()]
 
   _first, _second, _third = bound.container().columns(3)
 
-  first = _first.selectbox('1st Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize the most (1st priority)?'].unique()))
-  second = _second.selectbox('2nd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize next (2nd priority)?'].unique()))
-  third = _third.selectbox('3rd Priority', ['Any'] + list(st.session_state.cs_filtered['Which skill do you prioritize after that (3rd priority)?'].unique()))
+  first = _first.selectbox('1st Priority', ['Any'] + list(sheet['Which skill do you prioritize the most (1st priority)?'].unique()))
+  second = _second.selectbox('2nd Priority', ['Any'] + list(sheet['Which skill do you prioritize next (2nd priority)?'].unique()))
+  third = _third.selectbox('3rd Priority', ['Any'] + list(sheet['Which skill do you prioritize after that (3rd priority)?'].unique()))
 
   if first:
     if first != 'Any':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[7]].str.strip() == first]
+      sheet = sheet[sheet[sheet.columns[7]].str.strip() == first]
   if second:
     if second != 'Any':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[12]].str.strip() == second]
+      sheet = sheet[sheet[sheet.columns[12]].str.strip() == second]
   if third:
     if third != 'Any':
-      st.session_state.cs_filtered = st.session_state.cs_filtered[st.session_state.cs_filtered[st.session_state.cs_filtered.columns[13]].str.strip() == third]
+      sheet = sheet[sheet[sheet.columns[13]].str.strip() == third]
 
 
   _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-  _count.metric(':green[**Filtered Count**]', f'-   {len(st.session_state.cs_filtered)}   -')
+  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
 
 
 
@@ -316,19 +316,19 @@ else:
       establishSheetsConnections()
 
     current_submissions = getResponses()
-    verified = getVerified()
+    st.session_state.sheet2 = getVerified()
 
     st.write('### :blue[**Current Submissions**]')
 
-    st.session_state.cs_filtered = current_submissions.copy()
+    st.session_state.sheet1 = current_submissions.copy()
     
-    Filter(st.session_state.cs_filtered)
+    Filter(st.session_state.sheet1)
 
 
-    changes = plotDataEditor(st.session_state.cs_filtered)
+    st.session_state.buffer = plotDataEditor(st.session_state.sheet1)
     
     st.write('### :gray[**Buffer**]')
-    if len(st.session_state.cs_filtered) != 0:
+    if len(st.session_state.sheet1) != 0:
       st.dataframe(evaluateChanges(changes))
     else:
       st.info('No Options to Select From.')
