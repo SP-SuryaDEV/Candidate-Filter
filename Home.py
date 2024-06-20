@@ -340,6 +340,9 @@ else:
     _, center, __ = st.columns([0.4, 0.45, 0.1])
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
+    if use_predefined_buffer_options:
+      predefinedBufferOptions(st.session_state.sheet1, st.session_state.sheet2)
+
     st.divider()
     
     st.write('## :green[**Verified**]')
