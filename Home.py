@@ -195,7 +195,7 @@ def isValidEmail(email):
   return email.find('@') > -1 and email.find('.') > -1
 
 def Filter(sheet):
-  key=random.rand(0, 100000000)
+  key=random.random(0, 100000000)
   
   bound = st.container(border=True)
   _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
