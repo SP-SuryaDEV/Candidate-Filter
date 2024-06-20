@@ -336,6 +336,9 @@ else:
     _, center, __ = st.columns([0.4, 0.45, 0.1])
     use_predefined_buffer_options = center.button('Use Predifined Buffer Options')
 
+
+    st.session_state.sheet2 = Filter(st.session_state.sheet2)
+    
     st.write('### :green[**Verified**]')
     plotDataEditor(st.session_state.sheet2)
 
