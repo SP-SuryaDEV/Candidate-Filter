@@ -153,6 +153,7 @@ def setBuffer(df):
   st.session_state.sheet1['Select'] = pd.Series([False for _ in range(len(st.session_state.sheet1))])
   st.session_state.buffer = df.copy()
   st.rerun()
+  return df
 
 @st.experimental_dialog("Load Predefined Buffer?")
 def predefinedBufferOptions(sheet1, sheet2):
@@ -172,13 +173,13 @@ def predefinedBufferOptions(sheet1, sheet2):
 
   if option:
     if option == options[0]:
-      setBuffer(sheet1.merge(sheet2, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+      return setBuffer(sheet1.merge(sheet2, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
     elif option == options[1]:
-      setBuffer(sheet2.merge(sheet1, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
+      return setBuffer(sheet2.merge(sheet1, indicator=True, how='left').loc[lambda x: x['_merge'] == 'left_only'].drop(columns=['_merge']))
     elif option == options[2]:
-      setBuffer(pd.merge(sheet1, sheet2))
+      return setBuffer(pd.merge(sheet1, sheet2))
     elif option == options[3]:
-      setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
+      return setBuffer(pd.concat([sheet1, sheet2]).drop_duplicates().reset_index(drop=True))
 
   
 
