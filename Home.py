@@ -232,7 +232,7 @@ else:
     st.write('### :blue[**Current Submissions**]')
 
     
-    key=random.uniform(1.0, 10000.0)
+    key=1
     bound = st.container(border=True)
     _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
   
@@ -345,7 +345,7 @@ else:
 
 
     
-    key=random.uniform(1.0, 10000.0)  
+    key=20 
     bound = st.container(border=True)
     _name, _n_sw_toggle, _phone, _email, _email_sw_toggle = bound.container().columns([0.5, 0.2, 0.4, 0.4, 0.2])
   
