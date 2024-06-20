@@ -288,7 +288,7 @@ def Filter(sheet):
 
 
   _, __, _count, *___ = bound.container().columns([1, 1.3, 1, 1 ,1])
-  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -', key=f'{key+13}')
+  _count.metric(':green[**Filtered Count**]', f'-   {len(sheet)}   -')
 
   return sheet
 
