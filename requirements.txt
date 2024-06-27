@@ -1,3 +1,5 @@
 streamlit
+pandas
+numpy
 st-gsheets-connection
-pandas=2.0.0
+
