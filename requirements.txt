@@ -1,3 +1,2 @@
 streamlit
-pandas
-numpy
+pandas==2.2.2
